@@ -51,7 +51,7 @@ Para acesso do cluster do qual deseja rodar a imagem é necessário criar uma RB
 
 * No helm temos o seguinte exemplo, partindo do principio que já temos um namespace em questão para a aplicação e devemos víncular o helm a um namespace:
 
-``` helm install <realease> <chart-name> -n <namespace>```
+``` helm install <release> <chart-name> -n <namespace>```
 
 * Este namespace já prédefinido deve no ClusterRoleBinding
 
