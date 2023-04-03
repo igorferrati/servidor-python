@@ -35,7 +35,7 @@ server {
       }
       }
 ```
-```location / ``` encaminha o localhost (onde subir a imagem) para porta 8000 da qual teremos Gunicorn rodando um WSCGI, o mesmo realiza o comando ```kubectl get ns``` no cluster do qual a aplicação está e devolve para o site estátigo do nginx.
+```location / ``` encaminha o localhost (onde subir a imagem) para porta 8000 da qual teremos Gunicorn rodando um wsgi, o mesmo realiza o comando ```kubectl get ns``` no cluster do qual a aplicação está e devolve para o site estátigo do nginx.
 
 * A aplicação possuí acesso para listar os namespaces atraves de um ServiceAccount e ClusterRole/ClusterRoleBinding.
 
