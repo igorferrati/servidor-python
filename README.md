@@ -13,7 +13,7 @@ Criação de um servidor que lista namespace de um cluster com topologia:
 :file_folder: wsgi
 * Arquivo helm
 
-* :file_folder: dockerfile
+:file_folder: dockerfile
 * Build imagem docker
 * arquivos.py
 
