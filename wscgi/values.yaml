@@ -5,10 +5,10 @@
 replicaCount: 1
 
 image:
-  repository: nginx
+  repository: igorferrati/server
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: ""
+  tag: "5.0"
 
 imagePullSecrets: []
 nameOverride: ""
@@ -56,7 +56,7 @@ securityContext: {}
 
 service:
   type: ClusterIP
-  port: 80
+  port: 8000
 
 livenessProbe:
   httpGet:
@@ -69,17 +69,16 @@ readinessProbe:
     port: http
 
 ingress:
-  enabled: false
+  enabled: true
   className: ""
   annotations: {}
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
   hosts:
-    - host: chart-example.local
+    - host: app.34.122.129.137.sslip.io
       paths:
         - path: /
-          pathType: ImplementationSpecific
-  tls: []
+          pathType: Prefix
   #  - secretName: chart-example-tls
   #    hosts:
   #      - chart-example.local

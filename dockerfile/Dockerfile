@@ -12,7 +12,7 @@ RUN  apk update && \
      chmod +x kubectl && \
      install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl && \
      apk add python3 && \
-     python3 -m ensurepip --upgrade && \
+     python3 -m ensurepip --upgrade && \           
      python3 -m pip install -r requirements.txt
 
 EXPOSE 80
