@@ -5,10 +5,10 @@
 replicaCount: 1
 
 image:
-  repository: igorferrati/server
+  repository: igorferrati/teste-desafio
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "5.0"
+  tag: "8.0"
 
 imagePullSecrets: []
 nameOverride: ""

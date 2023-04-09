@@ -1,25 +1,61 @@
 '''
-Função incia uma aplicação WSGI (Web Server Gateway Interface)
+Função incia uma aplicação WSGI e usa python para consumir dados da API
 
-environ: dic com informações da requisição HTTP
+environ: dicionário com informações da requisição HTTP
 start_response: func que envia resposta HTTP de volta ao cliente, recebe
-                código de status HTTP e dic de cabeçalhos HTTP.
-data: variável resposta simples em bytes
+                código de status HTTP e dicionário de cabeçalhos HTTP.
+
+ns e get_ns = variáveis para manipulação e tratamento dos dados consumidos
+data: variável de resposta de dados
 status: variável com código de confirmação ok HTTP
-response_headers: lista de tuplas com cabeçalhos HTTP
+
+response_headers:
+    content-type: define o tipo de conteúdo enviado na navegador (texto simples)
+    content-leght: comprimento em bytes, navegador controla quando recebeu todos bytes
+    refresh: requisição de atualização de 5 segundos
+
 return: iteração o que contém em data
 '''
-import subprocess as sub
+from kubernetes import client, config
+
+def get_namespaces():
+    try:
+        # Load Kubernetes config file
+        config.load_incluster_config()
+
+        # Create Kubernetes API cliente
+        ns = client.CoreV1Api()
+
+        ns_list = ns.list_namespace()
+        get_ns = []
+
+        for namespace in ns_list.items:
+            get_ns.append(namespace.metadata.name)
+
+        return get_ns
+
+    except Exception as erro:
+        return str(erro)
+
 
 def app(environ, start_response):
-    ns = sub.check_output(['kubectl', 'get', 'ns'])
-    data = ns           #em bytes
-    status = '200 OK'
-    response_headers = [
-        ('Content-type', 'text/plain'),
-        ('Content-Length', str(len(data))),
-        ('Refresh', '5')
-    ]
-    start_response(status, response_headers)
-    return iter([data])
 
+    namespaces = get_namespaces()
+
+    if isinstance(namespaces, list):
+        status = '200 OK'
+        body = f"<pre>{namespaces}</pre>".encode()
+    else:
+        status = '500 Internal Server Error'
+        body = str(namespaces).encode()
+
+    response_headers = [
+        ('Content-type', 'text/html'),
+        ('Content-Length', str(len(body)))
+    ]
+
+    meta_tag = b'<meta http-equiv="refresh" content="5">'
+    body_meta = meta_tag + body
+
+    start_response(status, response_headers)
+    return [body_meta]
