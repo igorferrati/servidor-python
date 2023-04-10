@@ -44,7 +44,7 @@ server {
 * O build da imagem cria as dependências
 * O arquivo requirements.txt possui as bibliotecas necessárias
 * O comando ```python3 -m pip install -r requirements.txt``` configura qual o pip install de acordo com a versão especificada
-* É utilizado o Python client [kubernetes](https://github.com/kubernetes-client/python) API para consumir recursos do cluster
+* É utilizado o [Kubernetes Python Client](https://github.com/kubernetes-client/python) API para consumir recursos do cluster
 
 ## ServiceAccount / ClusterRole / ClusterRoleBinding
 

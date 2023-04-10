@@ -1,20 +1,13 @@
 '''
-Função incia uma aplicação WSGI e usa python para consumir dados da API
+def get_namespaces:
 
-environ: dicionário com informações da requisição HTTP
-start_response: func que envia resposta HTTP de volta ao cliente, recebe
-                código de status HTTP e dicionário de cabeçalhos HTTP.
+Configura credenciais do cluster validadas no POD
 
-ns e get_ns = variáveis para manipulação e tratamento dos dados consumidos
-data: variável de resposta de dados
-status: variável com código de confirmação ok HTTP
+Utiliza o client kubernetes para consumir recursos
 
-response_headers:
-    content-type: define o tipo de conteúdo enviado na navegador (texto simples)
-    content-leght: comprimento em bytes, navegador controla quando recebeu todos bytes
-    refresh: requisição de atualização de 5 segundos
+Coloca em uma lista as informações consumidas
 
-return: iteração o que contém em data
+Retorna a lista ou except
 '''
 from kubernetes import client, config
 
@@ -38,6 +31,18 @@ def get_namespaces():
         return str(erro)
 
 
+'''
+def app:
+Função chama função get_namespaces(), faz uma verificação para enviar ao cabeçalho HTTP.
+
+Desempacota e formatada lista retornada pela função get_namespace e transforma em bytes
+
+response_headers:
+    content-type: define o tipo de conteúdo enviado ao navegador
+    content-leght: comprimento em bytes, navegador controla quando recebeu todos bytes
+
+retorna body_meta formatado para refresh e título em bytes.
+'''
 def app(environ, start_response):
 
     namespaces = get_namespaces()
