@@ -7,19 +7,21 @@ Criação de um servidor que lista namespace de um cluster com topologia:
 * NGINX como proxy reversa
 * Gunicorn como servidor HTTP 
 * Cluster Role / Service Account para acesso da API
-
+* Implantação via helm
 ---
 
 :file_folder: wsgi
-* Arquivo helm
+* chart helm
 
 :file_folder: dockerfile
-* Build imagem docker
+* build imagem docker
 * arquivos.py
 
 ---
 
 ## Config Nginx
+
+Configuração nginx (port 80) com gunicorn (port 8000)
 
 ```
 server {
@@ -35,17 +37,18 @@ server {
       }
       }
 ```
-```location / ``` encaminha o localhost (onde subir a imagem) para porta 8000 da qual teremos Gunicorn rodando um wsgi, o mesmo realiza o comando ```kubectl get ns``` no cluster do qual a aplicação está e devolve para o site estátigo do nginx.
-
-* A aplicação possuí acesso para listar os namespaces atraves de um ServiceAccount e ClusterRole/ClusterRoleBinding.
+```location / ``` encaminha o localhost (onde estiver a image) para porta 8000 (Gunicorn).
 
 ## Python / Dockerfile
 
-* O build da imagem cria as dependências necessárias para utilização do Gunicorn
-* O arquivo requirements.txt funciona como uma lista de depêndencias 
-* O comando ```python3 -m pip install -r requirements.txt``` instala o que for listado em requirements.txt de acordo com a versão especificada.
+* O build da imagem cria as dependências
+* O arquivo requirements.txt possui as bibliotecas necessárias
+* O comando ```python3 -m pip install -r requirements.txt``` configura qual o pip install de acordo com a versão especificada
+* É utilizado o Python client [kubernetes](https://github.com/kubernetes-client/python) API para consumir recursos do cluster
 
 ## ServiceAccount / ClusterRole / ClusterRoleBinding
+
+* A aplicação deve possuir acesso para listar os namespaces.
 
 Para acesso do cluster do qual deseja rodar a imagem é necessário criar uma RBAC de acesso e vincular um serviceaccount ao tipo de permissão desejada.
 

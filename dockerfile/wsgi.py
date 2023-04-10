@@ -44,17 +44,21 @@ def app(environ, start_response):
 
     if isinstance(namespaces, list):
         status = '200 OK'
-        body = f"<pre>{namespaces}</pre>".encode()
+        body = b''
+        for name in namespaces:
+            body += f'<pre>{name}</pre>'.encode()
+        
+        
     else:
         status = '500 Internal Server Error'
-        body = str(namespaces).encode()
+        body = str(namespaces).encode("utf-8")
 
     response_headers = [
         ('Content-type', 'text/html'),
         ('Content-Length', str(len(body)))
     ]
 
-    meta_tag = b'<meta http-equiv="refresh" content="5">'
+    meta_tag = b'<h2>namespaces:</h2> <meta http-equiv="refresh" content="5">'
     body_meta = meta_tag + body
 
     start_response(status, response_headers)
